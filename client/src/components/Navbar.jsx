@@ -35,7 +35,10 @@ const Navbar = () => {
                             </a>
                         ))}
                     </div>
-                    <button className="bg-accent text-white px-7 py-3 rounded-full font-bold hover:shadow-[0_0_20px_rgba(124,58,237,0.4)] transition-all text-sm uppercase">
+                    <button
+                        onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
+                        className="bg-accent text-white px-7 py-3 rounded-full font-bold hover:shadow-[0_0_20px_rgba(124,58,237,0.4)] transition-all text-sm uppercase"
+                    >
                         Hire Me
                     </button>
                 </div>
@@ -62,7 +65,13 @@ const Navbar = () => {
                             {link.name}
                         </a>
                     ))}
-                    <button className="bg-accent text-white px-8 py-4 rounded-full font-bold text-lg mt-4">
+                    <button
+                        onClick={() => {
+                            setIsOpen(false);
+                            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className="bg-accent text-white px-8 py-4 rounded-full font-bold text-lg mt-4"
+                    >
                         Hire Me
                     </button>
                 </div>
