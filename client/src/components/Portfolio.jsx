@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const categories = ["All", "Website Design", "App Design", "Graphic Design"];
+const categories = ["All", "Web App", "Landing Page", "Management System"];
 
 const Portfolio = () => {
     const [activeTab, setActiveTab] = useState("All");
@@ -24,9 +24,12 @@ const Portfolio = () => {
         : projects.filter(p => p.category === activeTab);
 
     return (
-        <section id="portfolio" className="py-24 px-8 md:px-24">
+        <section id="portfolio" className="section-container">
             <div className="text-center mb-16">
-                <h2 className="text-5xl font-bold text-textMain mb-8">My Projects</h2>
+                <h2 className="text-5xl font-bold text-white mb-6 tracking-tight">Featured <span className="text-accent">Projects</span></h2>
+                <p className="text-textSecondary max-w-3xl mx-auto text-lg leading-relaxed mb-10">
+                    Evidence of versatility. From complex technical architectures to unique creative concepts, these projects showcase my ability to tackle any idea and turn it into a high-performance reality.
+                </p>
                 <div className="flex flex-wrap justify-center gap-4 mb-12">
                     {categories.map(cat => (
                         <button

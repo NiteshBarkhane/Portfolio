@@ -1,32 +1,49 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { getAll, createOne, updateOne, deleteOne } = require('../controllers/contentController');
-const Project = require('../models/Project');
-const Skill = require('../models/Skill');
-const Service = require('../models/Service');
-const Contact = require('../models/Contact');
+import {
+    getAll, createOne, updateOne, deleteOne,
+    getSettings, updateSetting, uploadImage
+} from '../controllers/contentController.js';
+import { login, verifyToken } from '../controllers/authController.js';
+import { upload } from '../config/cloudinary.js';
+
+import Project from '../models/Project.js';
+import Skill from '../models/Skill.js';
+import Service from '../models/Service.js';
+import Contact from '../models/Contact.js';
+
+// Auth
+router.post('/auth/login', login);
 
 // Projects
 router.get('/projects', getAll(Project));
-router.post('/projects', createOne(Project));
-router.put('/projects/:id', updateOne(Project));
-router.delete('/projects/:id', deleteOne(Project));
+router.post('/projects', verifyToken, upload.single('image'), createOne(Project));
+router.put('/projects/:id', verifyToken, upload.single('image'), updateOne(Project));
+router.delete('/projects/:id', verifyToken, deleteOne(Project));
 
 // Skills
 router.get('/skills', getAll(Skill));
-router.post('/skills', createOne(Skill));
-router.put('/skills/:id', updateOne(Skill));
-router.delete('/skills/:id', deleteOne(Skill));
+router.post('/skills', verifyToken, createOne(Skill));
+router.put('/skills/:id', verifyToken, updateOne(Skill));
+router.delete('/skills/:id', verifyToken, deleteOne(Skill));
 
 // Services
 router.get('/services', getAll(Service));
-router.post('/services', createOne(Service));
-router.put('/services/:id', updateOne(Service));
-router.delete('/services/:id', deleteOne(Service));
+router.post('/services', verifyToken, createOne(Service));
+router.put('/services/:id', verifyToken, updateOne(Service));
+router.delete('/services/:id', verifyToken, deleteOne(Service));
 
-// Contact (POST only for public, GET/DELETE for admin)
+// Settings
+router.get('/settings', getSettings);
+router.post('/settings', verifyToken, updateSetting);
+
+// Contact
 router.post('/contact', createOne(Contact));
-router.get('/contact', getAll(Contact));
-router.delete('/contact/:id', deleteOne(Contact));
+router.get('/contact', verifyToken, getAll(Contact));
+router.delete('/contact/:id', verifyToken, deleteOne(Contact));
 
-module.exports = router;
+// General Upload
+router.post('/upload', verifyToken, upload.single('image'), uploadImage);
+
+export default router;
+
