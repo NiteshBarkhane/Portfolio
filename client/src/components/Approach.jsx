@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useSettings } from '../context/SettingsContext';
 import { Search, PenTool, Code, CheckCircle } from 'lucide-react';
 
 const Approach = () => {
+    const { getSetting } = useSettings();
+
     const steps = [
         {
             icon: <Search className="w-10 h-10 text-accent" />,
@@ -30,9 +33,11 @@ const Approach = () => {
         <section id="approach" className="section-container bg-primary/50 relative overflow-hidden">
             <div className="absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent/20 to-transparent -z-10 hidden lg:block"></div>
             <div className="text-center mb-20">
-                <h2 className="text-5xl font-bold text-white mb-6">My <span className="text-accent">Approach</span></h2>
+                <h2 className="text-5xl font-bold text-white mb-6">
+                    {getSetting('approach_title', "My Approach")}
+                </h2>
                 <p className="text-textSecondary max-w-2xl mx-auto text-lg leading-relaxed">
-                    A transparency-first workflow designed to keep you updated at every stage of the development process.
+                    {getSetting('approach_desc', "A transparency-first workflow designed to keep you updated at every stage of the development process.")}
                 </p>
             </div>
 
