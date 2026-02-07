@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSettings } from '../context/SettingsContext';
-import { Smartphone, Layout, Palette, Globe, Server, Zap, Database } from 'lucide-react';
-
-const iconMap = {
-    Smartphone: <Smartphone className="text-accent w-12 h-12" />,
-    Layout: <Layout className="text-accent w-12 h-12" />,
-    Palette: <Palette className="text-accent w-12 h-12" />,
-    Globe: <Globe className="text-accent w-12 h-12" />,
-    Server: <Server className="text-accent w-12 h-12" />,
-    Zap: <Zap className="text-accent w-12 h-12" />,
-    Database: <Database className="text-accent w-12 h-12" />,
-};
+import Icon from './Icon';
 
 const Services = () => {
     const { getSetting } = useSettings();
@@ -44,7 +34,7 @@ const Services = () => {
                 {services.map((service, index) => (
                     <div key={index} className="bg-secondary p-10 rounded-3xl hover:border-accent border border-transparent transition-all group">
                         <div className="mb-6 group-hover:scale-110 transition-transform">
-                            {iconMap[service.icon] || <Layout className="text-accent w-12 h-12" />}
+                            <Icon path={service.iconPath} name={service.iconName} size={48} className="text-accent" />
                         </div>
                         <h3 className="text-2xl font-bold text-textMain mb-4">{service.title}</h3>
                         <p className="text-textSecondary leading-relaxed">{service.description}</p>

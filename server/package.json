@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Portfolio Backend API",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -10,7 +10,7 @@
     "seed": "node seed.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nitesh Barkhane",
   "license": "ISC",
   "type": "module",
   "dependencies": {
@@ -20,15 +20,11 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "express-mongo-sanitize": "^2.2.0",
-    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.1.2",
-    "morgan": "^1.10.1",
     "multer": "^2.0.2",
     "multer-storage-cloudinary": "^4.0.0",
-    "nodemailer": "^8.0.0",
-    "xss-clean": "^0.1.4"
+    "nodemailer": "^8.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"

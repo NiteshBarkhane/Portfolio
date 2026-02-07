@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import Sidebar from '../components/admin/Sidebar';
-import { Menu } from 'lucide-react';
+import Icon from '../components/Icon';
 
 const AdminLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -27,7 +27,7 @@ const AdminLayout = () => {
                         onClick={() => setIsSidebarOpen(true)}
                         className="text-white p-2 hover:bg-white/5 rounded-lg"
                     >
-                        <Menu size={24} />
+                        <Icon path="M3 12h18M3 6h18M3 18h18" name="Menu" size={24} />
                     </button>
                 </header>
 

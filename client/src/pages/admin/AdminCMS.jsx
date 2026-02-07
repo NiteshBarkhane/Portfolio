@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Upload, X } from 'lucide-react';
+import Icon from '../../components/Icon';
 import { useSettings } from '../../context/SettingsContext';
 import toast from 'react-hot-toast';
 
@@ -127,13 +127,13 @@ const AdminCMS = () => {
                                                 htmlFor={`file-${key}`}
                                                 className="flex items-center justify-center gap-2 px-4 py-3 bg-white/5 border border-dashed border-white/20 rounded-lg text-textSecondary cursor-pointer hover:border-accent hover:text-white transition-all w-full text-xs"
                                             >
-                                                <Upload size={16} />
+                                                <Icon path="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" name="Upload" size={16} />
                                                 {file && key.includes('image') ? file.name : 'Choose New Image'}
                                             </label>
 
                                             {file && (
                                                 <button onClick={() => setFile(null)} className="text-xs text-red-400 hover:underline flex items-center gap-1">
-                                                    <X size={12} /> Clear Selection
+                                                    <Icon path="M18 6L6 18M6 6l12 12" name="Close" size={12} /> Clear Selection
                                                 </button>
                                             )}
                                         </div>

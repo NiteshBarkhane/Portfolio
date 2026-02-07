@@ -1,29 +1,29 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useSettings } from '../context/SettingsContext';
-import { Search, PenTool, Code, CheckCircle } from 'lucide-react';
+import Icon from './Icon';
 
 const Approach = () => {
     const { getSetting } = useSettings();
 
     const steps = [
         {
-            icon: <Search className="w-10 h-10 text-accent" />,
+            icon: <Icon path="M11 4a7 7 0 0 1 0 14m0-14a7 7 0 0 0 0 14m0-14v14M4 11h14" name="Search" className="w-10 h-10 text-accent" />,
             title: "Discovery & Planning",
             description: "We start by understanding your business goals, target audience, and project requirements to create a detailed roadmap."
         },
         {
-            icon: <PenTool className="w-10 h-10 text-accent" />,
+            icon: <Icon path="M12 19l7-7 3 3-7 7-3-3z M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z M2 2l7.586 7.586" name="Pen Tool" className="w-10 h-10 text-accent" />,
             title: "Design & Prototyping",
             description: "I craft intuitive user interfaces and experiences, ensuring the design aligns with your brand identity and users' needs."
         },
         {
-            icon: <Code className="w-10 h-10 text-accent" />,
+            icon: <Icon path="M16 18l6-6-6-6M8 6l-6 6 6 6" name="Code" className="w-10 h-10 text-accent" />,
             title: "Development & Integration",
             description: "Using the most effective modern technologies, I build a robust and scalable application with clean code and modern best practices."
         },
         {
-            icon: <CheckCircle className="w-10 h-10 text-accent" />,
+            icon: <Icon path="M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4L12 14.01l-3-3" name="Check Circle" className="w-10 h-10 text-accent" />,
             title: "Testing & Launch",
             description: "Rigorous testing ensures a bug-free experience. After your approval, we launch your project to the world."
         }

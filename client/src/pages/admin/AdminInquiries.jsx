@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Trash2 } from 'lucide-react';
+import Icon from '../../components/Icon';
 import toast from 'react-hot-toast';
 
 const AdminInquiries = () => {
@@ -110,7 +110,7 @@ const AdminInquiries = () => {
                                 onClick={() => handleDeleteConversation(selectedUser.email)}
                                 className="p-2 text-red-400 hover:bg-red-400/10 rounded-lg transition-colors flex items-center gap-2 text-xs font-bold"
                             >
-                                <Trash2 size={16} /> Delete
+                                <Icon path="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" name="Delete" size={16} /> Delete
                             </button>
                         </div>
                         <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-primary/20">
@@ -130,7 +130,7 @@ const AdminInquiries = () => {
                 ) : (
                     <div className="flex-1 flex flex-col items-center justify-center text-textSecondary gap-4">
                         <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center">
-                            <Trash2 size={32} opacity={0.2} />
+                            <Icon path="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" name="Delete" size={32} className="opacity-20" />
                         </div>
                         <p>Select a conversation to view details</p>
                     </div>

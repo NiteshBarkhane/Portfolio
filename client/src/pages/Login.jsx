@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Lock } from 'lucide-react';
+import Icon from '../components/Icon';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -25,7 +25,7 @@ const Login = () => {
             <div className="glass-card p-10 w-full max-w-md">
                 <div className="flex flex-col items-center mb-10">
                     <div className="w-16 h-16 bg-accent/20 rounded-2xl flex items-center justify-center text-accent mb-6">
-                        <Lock size={32} />
+                        <Icon path="M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zM7 11V7a5 5 0 0 1 10 0v4" name="Lock" size={32} />
                     </div>
                     <h1 className="text-3xl font-bold text-white">Admin Access</h1>
                     <p className="text-textSecondary mt-2">Enter credentials to continue</p>

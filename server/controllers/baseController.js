@@ -9,13 +9,10 @@ export const getAll = (Model) => async (req, res) => {
 
 export const createOne = (Model) => async (req, res) => {
     try {
-        const data = { ...req.body };
-        if (req.file) {
-            data.image = req.file.path;
-        }
-        const newItem = new Model(data);
-        const savedItem = await newItem.save();
-        res.status(201).json(savedItem);
+        const item = new Model(req.body);
+        if (req.file) item.image = req.file.path;
+        await item.save();
+        res.status(201).json(item);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -23,12 +20,11 @@ export const createOne = (Model) => async (req, res) => {
 
 export const updateOne = (Model) => async (req, res) => {
     try {
-        const data = { ...req.body };
-        if (req.file) {
-            data.image = req.file.path;
-        }
-        const updatedItem = await Model.findByIdAndUpdate(req.params.id, data, { new: true });
-        res.json(updatedItem);
+        const updateData = req.body;
+        if (req.file) updateData.image = req.file.path;
+        const item = await Model.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        if (!item) return res.status(404).json({ message: 'Not found' });
+        res.json(item);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -36,9 +32,9 @@ export const updateOne = (Model) => async (req, res) => {
 
 export const deleteOne = (Model) => async (req, res) => {
     try {
-        // Here we could add Cloudinary delete logic if we want to be strict
-        await Model.findByIdAndDelete(req.params.id);
-        res.json({ message: 'Item deleted successfully' });
+        const item = await Model.findByIdAndDelete(req.params.id);
+        if (!item) return res.status(404).json({ message: 'Not found' });
+        res.json({ message: 'Deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

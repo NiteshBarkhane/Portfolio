@@ -1,13 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useSettings } from '../context/SettingsContext';
-import { ArrowRight, Sparkles, Code2 } from 'lucide-react';
+import Icon from './Icon';
 
 const Hero = () => {
     const { getSetting } = useSettings();
 
     // Reduced particles for better performance
-    const particles = Array.from({ length: 25 });
+    const particles = Array.from({ length: 35 });
 
     // Stagger animation for text
     const containerVariants = {
@@ -37,7 +37,7 @@ const Hero = () => {
                 {particles.map((_, i) => (
                     <motion.div
                         key={i}
-                        className="absolute w-1 h-1 bg-accent/30 rounded-full"
+                        className="absolute w-2 h-2 bg-accent/30 rounded-full"
                         initial={{
                             x: Math.random() * window.innerWidth,
                             y: Math.random() * window.innerHeight,
@@ -66,7 +66,7 @@ const Hero = () => {
                 <motion.div
                     className="inline-flex items-center gap-2 bg-accent/10 border border-accent/20 px-4 py-2 rounded-full mb-6 group hover:bg-accent/20 transition-all cursor-default"
                 >
-                    <Sparkles className="w-4 h-4 text-accent animate-pulse" />
+                    <Icon path="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" name="Sparkles" className="w-4 h-4 text-accent animate-pulse" />
                     <span className="text-sm text-accent font-medium tracking-wide">
                         {getSetting('hero_badge', 'Available for Freelance')}
                     </span>
@@ -113,7 +113,7 @@ const Hero = () => {
                         whileTap={{ scale: 0.95 }}
                     >
                         <span className="relative z-10">Start a Project</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10" />
+                        <Icon path="M12 19V5M5 12l7-7 7 7" name="Arrow Right" className="w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10" />
                         <motion.div
                             className="absolute inset-0 bg-gradient-to-r from-purple-600 to-accent"
                             initial={{ x: "-100%" }}
@@ -126,7 +126,7 @@ const Hero = () => {
                         onClick={() => document.getElementById('about').scrollIntoView({ behavior: 'smooth' })}
                         className="group glass-card px-8 py-3 rounded-full font-semibold text-sm text-white hover:bg-white/10 transition-all flex items-center gap-2"
                     >
-                        <Code2 className="w-4 h-4" />
+                        <Icon path="M16 18l6-6-6-6M8 6l-6 6 6 6" name="Code" className="w-4 h-4" />
                         <span>My Journey</span>
                     </motion.button>
                 </motion.div>

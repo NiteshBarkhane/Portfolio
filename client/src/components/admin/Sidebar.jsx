@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import {
-    LayoutDashboard, Folder, Lightbulb, MessageSquare,
-    LogOut, Menu, X, Tag
-} from 'lucide-react';
+import Icon from '../Icon';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
     const navigate = useNavigate();
@@ -14,11 +11,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     };
 
     const links = [
-        { path: '/admin/cms', label: 'CMS / Content', icon: LayoutDashboard },
-        { path: '/admin/services', label: 'Services', icon: Lightbulb },
-        { path: '/admin/projects', label: 'Projects', icon: Folder },
-        { path: '/admin/categories', label: 'Categories', icon: Tag },
-        { path: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },
+        { path: '/admin/cms', label: 'CMS / Content', icon: 'M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z' },
+        { path: '/admin/services', label: 'Services', icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z' },
+        { path: '/admin/projects', label: 'Projects', icon: 'M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z' },
+        { path: '/admin/categories', label: 'Categories', icon: 'M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82zM7 7h.01' },
+        { path: '/admin/inquiries', label: 'Inquiries', icon: 'M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z' },
     ];
 
     return (
@@ -47,7 +44,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             onClick={() => setIsOpen(false)}
                             className="lg:hidden text-white/50 hover:text-white"
                         >
-                            <X size={24} />
+                            <Icon path="M18 6L6 18M6 6l12 12" name="Close" size={24} />
                         </button>
                     </div>
 
@@ -65,7 +62,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                         : 'text-textSecondary hover:bg-white/5 hover:text-white'}
                                 `}
                             >
-                                <link.icon size={18} />
+                                <Icon path={link.icon} name={link.label} size={18} />
                                 {link.label}
                             </NavLink>
                         ))}
@@ -76,7 +73,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                         onClick={logout}
                         className="mt-auto flex items-center gap-3 px-3 py-2.5 text-red-400 hover:bg-red-400/10 rounded-lg transition-all font-medium"
                     >
-                        <LogOut size={18} />
+                        <Icon path="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" name="Logout" size={18} />
                         Logout
                     </button>
                 </div>

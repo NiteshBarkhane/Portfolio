@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import Project from './models/Project.js';
-import Skill from './models/Skill.js';
 import Service from './models/Service.js';
 import Setting from './models/Setting.js';
 import Category from './models/Category.js';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowUp } from 'lucide-react';
+import Icon from './Icon';
 
 const BackToTop = () => {
     const [isVisible, setIsVisible] = useState(false);
@@ -30,7 +30,7 @@ const BackToTop = () => {
                 onClick={scrollToTop}
                 className="bg-accent hover:bg-accent/80 text-white p-3 rounded-full shadow-lg shadow-accent/30 transition-all hover:scale-110"
             >
-                <ArrowUp size={24} />
+                <Icon path="M12 19V5M5 12l7-7 7 7" name="Arrow Up" size={24} />
             </button>
         </div>
     );

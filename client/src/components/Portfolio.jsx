@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import axios from 'axios';
 import { useSettings } from '../context/SettingsContext';
-import { ExternalLink, Github } from 'lucide-react';
+import Icon from './Icon';
 
 const Portfolio = () => {
     const { getSetting } = useSettings();
     const [activeTab, setActiveTab] = useState("All");
     const [projects, setProjects] = useState([]);
     const [categories, setCategories] = useState(["All"]);
-    const [visibleCount, setVisibleCount] = useState(4); // Feature only 4 by default
+    const [showAll, setShowAll] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,12 +35,11 @@ const Portfolio = () => {
 
     const handleTabChange = useCallback((cat) => {
         setActiveTab(cat);
-        setVisibleCount(4); // Reset to 4 when changing category
+        setShowAll(false);
     }, []);
 
-    const showAllProjects = () => {
-        setVisibleCount(filteredProjects.length);
-    };
+    const visibleProjects = showAll ? filteredProjects : filteredProjects.slice(0, 3);
+    const hasMore = filteredProjects.length > 3;
 
     return (
         <section id="portfolio" className="section-container">
@@ -71,7 +70,7 @@ const Portfolio = () => {
 
             {/* Projects Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredProjects.slice(0, visibleCount).map((project) => (
+                {visibleProjects.map((project) => (
                     <div key={project._id} className="glass-card p-4 group relative border border-white/5 hover:border-accent/40 transition-all duration-300 flex flex-col h-full">
                         <div className="aspect-video w-full rounded-lg overflow-hidden mb-4 bg-black/20 flex-shrink-0">
                             <img
@@ -91,12 +90,12 @@ const Portfolio = () => {
                             <div className="flex gap-3 mt-auto pt-4 border-t border-white/5">
                                 {project.link && (
                                     <a href={project.link} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 text-xs font-bold bg-white/5 py-2.5 rounded-lg hover:bg-accent text-white transition-all">
-                                        <ExternalLink size={14} /> Live View
+                                        <Icon path="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" name="External Link" size={14} /> Live View
                                     </a>
                                 )}
                                 {project.github && (
                                     <a href={project.github} target="_blank" rel="noreferrer" className="flex-1 flex items-center justify-center gap-2 text-xs font-bold bg-white/5 py-2.5 rounded-lg hover:bg-white/20 text-white transition-all">
-                                        <Github size={14} /> Code
+                                        <Icon path="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" name="GitHub" size={14} /> Code
                                     </a>
                                 )}
                             </div>
@@ -105,14 +104,33 @@ const Portfolio = () => {
                 ))}
             </div>
 
-            {/* See All Button */}
-            {visibleCount < filteredProjects.length && (
-                <div className="mt-16 text-center">
+            {/* See More/Show Less Button */}
+            {hasMore && (
+                <div className="mt-16 text-center relative">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+                    </div>
                     <button
-                        onClick={showAllProjects}
-                        className="bg-accent text-white px-8 py-3 rounded-full font-bold text-sm tracking-wide hover:shadow-[0_0_20px_rgba(124,58,237,0.4)] transition-all transform hover:-translate-y-1"
+                        onClick={() => setShowAll(!showAll)}
+                        className="relative bg-secondary/80 backdrop-blur-sm text-white px-10 py-4 rounded-full font-bold text-sm tracking-wide border border-white/10 hover:border-accent hover:bg-accent/10 transition-all duration-300 shadow-lg hover:shadow-accent/20 group"
                     >
-                        See All Projects
+                        <span className="flex items-center gap-2">
+                            {showAll ? (
+                                <>
+                                    Show Less
+                                    <svg className="w-4 h-4 transition-transform group-hover:-translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                    </svg>
+                                </>
+                            ) : (
+                                <>
+                                    See More Projects
+                                    <svg className="w-4 h-4 transition-transform group-hover:translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </>
+                            )}
+                        </span>
                     </button>
                 </div>
             )}

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import Icon from './Icon';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -48,7 +47,7 @@ const Navbar = () => {
                     className="lg:hidden text-white p-2"
                     onClick={() => setIsOpen(!isOpen)}
                 >
-                    {isOpen ? <X size={28} /> : <Menu size={28} />}
+                    {isOpen ? <Icon path="M18 6L6 18M6 6l12 12" name="Close" size={28} /> : <Icon path="M3 12h18M3 6h18M3 18h18" name="Menu" size={28} />}
                 </button>
             </div>
 

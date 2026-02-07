@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import { Loader2, Mail, MapPin, Send } from 'lucide-react';
+import Icon from './Icon';
 import { useSettings } from '../context/SettingsContext';
 
 const Contact = () => {
@@ -55,11 +55,11 @@ const Contact = () => {
                         <p className="text-textSecondary mb-8 text-lg">{getSetting('contact_info_subtitle', "Prefer a direct message? You can find me on these platforms or drop an email.")}</p>
                         <ul className="space-y-6 text-white">
                             <li className="flex items-center gap-4">
-                                <div className="p-3 bg-accent/20 rounded-lg text-accent"><Mail /></div>
+                                <div className="p-3 bg-accent/20 rounded-lg text-accent"><Icon path="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6" name="Mail" /></div>
                                 <span className="text-lg">{getSetting('contact_email', "niteshbarkhane123@gmail.com")}</span>
                             </li>
                             <li className="flex items-center gap-4">
-                                <div className="p-3 bg-accent/20 rounded-lg text-accent"><MapPin /></div>
+                                <div className="p-3 bg-accent/20 rounded-lg text-accent"><Icon path="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0zM12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" name="Map Pin" /></div>
                                 <span className="text-lg">{getSetting('contact_location', "Indore, India")}</span>
                             </li>
                         </ul>
@@ -159,7 +159,7 @@ const Contact = () => {
                         disabled={loading}
                         className="bg-accent text-white px-12 py-4 rounded-full font-bold text-xl hover:shadow-[0_0_20px_rgba(124,58,237,0.5)] transition-all w-full flex items-center justify-center gap-3 disabled:opacity-70"
                     >
-                        {loading ? <><Loader2 className="animate-spin" /> Sending...</> : <><Send size={20} /> Send Message</>}
+                        {loading ? <><Icon path="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" name="Loader" className="animate-spin" /> Sending...</> : <><Icon path="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" name="Send" size={20} /> Send Message</>}
                     </button>
                 </form>
             </div>
