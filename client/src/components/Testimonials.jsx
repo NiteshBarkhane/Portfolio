@@ -126,17 +126,20 @@ const Testimonials = () => {
                                         required: 'Testimonial is required',
                                         maxLength: { value: 500, message: 'Max 500 characters' }
                                     })}
-                                    placeholder="Your Testimonial *"
+                                    placeholder="Write your testimonial/feedback message *"
                                     rows="4"
                                     className="w-full px-4 py-3 bg-primary border border-accent/20 rounded-lg focus:outline-none focus:border-accent resize-none"
                                 />
                                 {errors.text && <p className="text-red-500 text-sm">{errors.text.message}</p>}
-                                <input
-                                    type="file"
-                                    {...register('userImage')}
-                                    accept="image/*"
-                                    className="w-full px-4 py-3 bg-primary border border-accent/20 rounded-lg"
-                                />
+                                <div className="space-y-2">
+                                    <label className="block text-sm text-textSecondary">Profile Photo (Optional)</label>
+                                    <input
+                                        type="file"
+                                        {...register('userImage')}
+                                        accept="image/*"
+                                        className="w-full px-4 py-3 bg-primary border border-accent/20 rounded-lg text-sm text-textSecondary file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-accent/10 file:text-accent hover:file:bg-accent/20"
+                                    />
+                                </div>
                                 <div className="flex gap-4">
                                     <button type="submit" className="flex-1 py-3 bg-accent hover:bg-accent/80 rounded-lg transition-colors">
                                         Submit Review

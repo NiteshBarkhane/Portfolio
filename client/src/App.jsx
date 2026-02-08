@@ -59,12 +59,12 @@ function App() {
                                             <About />
                                         </Suspense>
                                         <Services />
-                                        <Skills />
                                         <Portfolio />
-                                        <Testimonials />
-                                        <Pricing />
-                                        <FAQ />
+                                        <Skills />
                                         <Approach />
+                                        <Pricing />
+                                        <Testimonials />
+                                        <FAQ />
                                         <Contact />
                                     </main>
                                     <Footer />

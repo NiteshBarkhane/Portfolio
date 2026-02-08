@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 
 const AdminFAQs = () => {
     const [faqs, setFaqs] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({ question: '', answer: '', order: 0 });
     const [editId, setEditId] = useState(null);
 
@@ -14,29 +15,33 @@ const AdminFAQs = () => {
     }, []);
 
     const fetchFAQs = async () => {
+        setLoading(true);
         try {
             const { data } = await api.get('/faqs');
             setFaqs(data);
         } catch (error) {
             toast.error('Failed to fetch FAQs');
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const loadToast = toast.loading(editId ? 'Updating FAQ...' : 'Adding FAQ...');
         try {
             if (editId) {
                 await api.put(`/faqs/${editId}`, formData);
-                toast.success('FAQ updated');
+                toast.success('FAQ updated', { id: loadToast });
             } else {
                 await api.post('/faqs', formData);
-                toast.success('FAQ added');
+                toast.success('FAQ added', { id: loadToast });
             }
             setFormData({ question: '', answer: '', order: 0 });
             setEditId(null);
             fetchFAQs();
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Operation failed');
+            toast.error(error.response?.data?.message || 'Operation failed', { id: loadToast });
         }
     };
 
@@ -51,12 +56,13 @@ const AdminFAQs = () => {
 
     const handleDelete = async (id) => {
         if (!confirm('Delete this FAQ?')) return;
+        const loadToast = toast.loading('Deleting FAQ...');
         try {
             await api.delete(`/faqs/${id}`);
-            toast.success('FAQ deleted');
+            toast.success('FAQ deleted', { id: loadToast });
             fetchFAQs();
         } catch (error) {
-            toast.error('Failed to delete');
+            toast.error('Failed to delete', { id: loadToast });
         }
     };
 
@@ -103,31 +109,42 @@ const AdminFAQs = () => {
                 )}
             </form>
 
-            <div className="space-y-4">
-                {faqs.map(faq => (
-                    <div key={faq._id} className="bg-secondary/50 p-4 rounded-lg border border-accent/20">
-                        <div className="flex justify-between items-start mb-2">
-                            <h3 className="font-semibold flex-1">{faq.question}</h3>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => togglePublish(faq._id)}
-                                    className={`px-3 py-1 rounded text-sm ${faq.isPublished ? 'bg-green-500/20' : 'bg-gray-500/20'}`}
-                                >
-                                    {faq.isPublished ? 'Published' : 'Draft'}
-                                </button>
-                                <button onClick={() => { setFormData(faq); setEditId(faq._id); }} className="px-3 py-1 bg-accent/20 rounded text-sm">
-                                    Edit
-                                </button>
-                                <button onClick={() => handleDelete(faq._id)} className="px-3 py-1 bg-red-500/20 rounded text-sm">
-                                    Delete
-                                </button>
+            {loading ? (
+                <div className="flex justify-center py-20">
+                    <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+                </div>
+            ) : (
+                <div className="space-y-4">
+                    {faqs.map(faq => (
+                        <div key={faq._id} className="bg-secondary/50 p-4 rounded-lg border border-accent/20">
+                            <div className="flex justify-between items-start mb-2">
+                                <h3 className="font-semibold flex-1">{faq.question}</h3>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => togglePublish(faq._id)}
+                                        className={`px-3 py-1 rounded text-sm ${faq.isPublished ? 'bg-green-500/20' : 'bg-gray-500/20'}`}
+                                    >
+                                        {faq.isPublished ? 'Published' : 'Draft'}
+                                    </button>
+                                    <button onClick={() => { setFormData(faq); setEditId(faq._id); }} className="px-3 py-1 bg-accent/20 rounded text-sm">
+                                        Edit
+                                    </button>
+                                    <button onClick={() => handleDelete(faq._id)} className="px-3 py-1 bg-red-500/20 rounded text-sm">
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
+                            <p className="text-textSecondary text-sm">{faq.answer}</p>
+                            <p className="text-xs text-textSecondary mt-2">Order: {faq.order}</p>
                         </div>
-                        <p className="text-textSecondary text-sm">{faq.answer}</p>
-                        <p className="text-xs text-textSecondary mt-2">Order: {faq.order}</p>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                    {faqs.length === 0 && !loading && (
+                        <div className="text-center py-10 text-textSecondary">
+                            <p>No FAQs found.</p>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

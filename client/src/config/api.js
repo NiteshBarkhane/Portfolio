@@ -25,9 +25,8 @@ api.interceptors.response.use(
     (error) => {
         // You can handle 401 errors here (e.g., redirect to login)
         if (error.response && error.response.status === 401) {
-            // Optional: Logout user if token is invalid
-            // localStorage.removeItem('adminToken');
-            // window.location.href = '/login';
+            localStorage.removeItem('adminToken');
+            window.location.href = '/login';
         }
         return Promise.reject(error);
     }

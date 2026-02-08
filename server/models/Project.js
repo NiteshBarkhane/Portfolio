@@ -7,6 +7,7 @@ const ProjectSchema = new mongoose.Schema({
     category: { type: String }, // Website, App, etc.
     link: { type: String },
     github: { type: String },
+    isPublished: { type: Boolean, default: true }
 }, { timestamps: true });
 
 export default mongoose.model('Project', ProjectSchema);

@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 const sendNotificationEmail = async (testimonial) => {
     try {
         await transporter.sendMail({
-            from: process.env.EMAIL_USER,
+            from: `Nitesh Portfolio <${process.env.EMAIL_USER}>`,
             to: process.env.EMAIL_USER,
             subject: '⭐ New Testimonial Received',
             html: `
@@ -45,8 +45,8 @@ export const submitTestimonial = async (req, res) => {
         });
 
         if (existing) {
-            return res.status(429).json({ 
-                message: 'You can only submit one testimonial per day. Please try again later.' 
+            return res.status(429).json({
+                message: 'You can only submit one testimonial per day. Please try again later.'
             });
         }
 
@@ -83,10 +83,11 @@ export const submitTestimonial = async (req, res) => {
 
 export const getFeaturedTestimonials = async (req, res) => {
     try {
-        const testimonials = await Testimonial.find({ 
-            isPublished: true, 
-            isFeatured: true 
-        }).sort({ createdAt: -1 }).limit(9);
+        const testimonials = await Testimonial.find({
+            isPublished: true
+        })
+            .sort({ isFeatured: -1, createdAt: -1 })
+            .limit(9);
         res.json(testimonials);
     } catch (error) {
         res.status(500).json({ message: error.message });

@@ -72,11 +72,16 @@ const Footer = () => {
 
                 {/* Quick Links with Hover Effects */}
                 <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-white/70 font-medium mb-12 uppercase tracking-widest text-sm">
-                    {['Home', 'About', 'Services', 'Skills', 'Portfolio', 'Testimonials', 'Pricing', 'Approach', 'Contact'].map((item) => (
+                    {['Home', 'Services', 'Skills', 'Portfolio', 'Testimonials', 'Pricing', 'Contact'].map((item) => (
                         <a
                             key={item}
                             href={`#${item.toLowerCase()}`}
-                            className="hover:text-accent transition-colors relative group"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                const element = document.querySelector(`#${item.toLowerCase()}`);
+                                if (element) element.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                            className="hover:text-accent transition-colors relative group cursor-pointer"
                         >
                             {item}
                             <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>

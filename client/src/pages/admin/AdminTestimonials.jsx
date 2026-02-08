@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 
 const AdminTestimonials = () => {
     const [testimonials, setTestimonials] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -14,12 +15,15 @@ const AdminTestimonials = () => {
     }, []);
 
     const fetchTestimonials = async (searchQuery = '') => {
+        setLoading(true);
         try {
             const { data } = await api.get(`/testimonials?search=${searchQuery}`);
             setTestimonials(data.testimonials);
             setSearchTerm(data.searchTerm);
         } catch (error) {
             toast.error('Failed to fetch testimonials');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -92,52 +96,66 @@ const AdminTestimonials = () => {
                 )}
             </form>
 
-            <div className="space-y-4">
-                {testimonials.map(testimonial => (
-                    <div key={testimonial._id} className="bg-secondary/50 p-4 rounded-lg border border-accent/20">
-                        <div className="flex gap-4">
-                            <img
-                                src={testimonial.userImage || `https://ui-avatars.com/api/?name=${testimonial.name}&background=7c3aed&color=fff`}
-                                alt={testimonial.name}
-                                className="w-16 h-16 rounded-full object-cover"
-                            />
-                            <div className="flex-1">
-                                <div className="flex justify-between items-start mb-2">
-                                    <div>
-                                        <h3 className="font-semibold">{highlightText(testimonial.name)}</h3>
-                                        <p className="text-sm text-textSecondary">{highlightText(testimonial.email)}</p>
-                                        {testimonial.company && <p className="text-sm text-textSecondary">{testimonial.company}</p>}
+            {loading ? (
+                <div className="flex justify-center py-20">
+                    <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+                </div>
+            ) : (
+                <div className="space-y-4">
+                    {testimonials.map(testimonial => (
+                        <div key={testimonial._id} className="bg-secondary/50 p-6 rounded-lg border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div className="flex gap-4">
+                                <img
+                                    src={testimonial.userImage || `https://ui-avatars.com/api/?name=${testimonial.name}&background=7c3aed&color=fff`}
+                                    alt={testimonial.name}
+                                    className="w-16 h-16 rounded-full object-cover border-2 border-accent/20"
+                                />
+                                <div className="flex-1">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <div>
+                                            <h3 className="font-semibold text-lg text-white">{highlightText(testimonial.name)}</h3>
+                                            <p className="text-sm text-textSecondary">{highlightText(testimonial.email)}</p>
+                                            {testimonial.company && <p className="text-sm text-accent">{testimonial.company}</p>}
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => togglePublish(testimonial._id)}
+                                                className={`px-3 py-1 rounded text-sm transition-colors ${testimonial.isPublished ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-gray-500/20 text-gray-400 border border-gray-500/30'}`}
+                                            >
+                                                {testimonial.isPublished ? 'Published' : 'Draft'}
+                                            </button>
+                                            <button
+                                                onClick={() => toggleFeature(testimonial._id)}
+                                                className={`px-3 py-1 rounded text-sm transition-colors ${testimonial.isFeatured ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30' : 'bg-gray-500/20 text-gray-400 border border-gray-500/30'}`}
+                                            >
+                                                {testimonial.isFeatured ? '⭐ Featured' : 'Feature'}
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(testimonial._id)}
+                                                className="px-3 py-1 bg-red-500/20 text-red-400 border border-red-500/30 rounded text-sm hover:bg-red-500/30 transition-colors"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div className="flex gap-2">
-                                        <button
-                                            onClick={() => togglePublish(testimonial._id)}
-                                            className={`px-3 py-1 rounded text-sm ${testimonial.isPublished ? 'bg-green-500/20' : 'bg-gray-500/20'}`}
-                                        >
-                                            {testimonial.isPublished ? 'Published' : 'Draft'}
-                                        </button>
-                                        <button
-                                            onClick={() => toggleFeature(testimonial._id)}
-                                            className={`px-3 py-1 rounded text-sm ${testimonial.isFeatured ? 'bg-yellow-500/20' : 'bg-gray-500/20'}`}
-                                        >
-                                            {testimonial.isFeatured ? '⭐ Featured' : 'Feature'}
-                                        </button>
-                                        <button onClick={() => handleDelete(testimonial._id)} className="px-3 py-1 bg-red-500/20 rounded text-sm">
-                                            Delete
-                                        </button>
+                                    <div className="text-accent mb-2">
+                                        {'★'.repeat(testimonial.rating)}{'☆'.repeat(5 - testimonial.rating)}
                                     </div>
+                                    <p className="text-textSecondary leading-relaxed">{highlightText(testimonial.text)}</p>
+                                    <p className="text-xs text-textSecondary/50 mt-4 pt-4 border-t border-accent/10">
+                                        Submitted: {new Date(testimonial.createdAt).toLocaleDateString()}
+                                    </p>
                                 </div>
-                                <div className="text-accent mb-2">
-                                    {'★'.repeat(testimonial.rating)}{'☆'.repeat(5 - testimonial.rating)}
-                                </div>
-                                <p className="text-textSecondary">{highlightText(testimonial.text)}</p>
-                                <p className="text-xs text-textSecondary mt-2">
-                                    Submitted: {new Date(testimonial.createdAt).toLocaleDateString()}
-                                </p>
                             </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                    {testimonials.length === 0 && !loading && (
+                        <div className="text-center py-20 text-textSecondary bg-secondary/30 rounded-lg border border-white/5">
+                            <p>No testimonials found.</p>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getServices, createService, updateService, deleteService } from '../controllers/serviceController.js';
+import { getServices, createService, updateService, deleteService, toggleServiceStatus } from '../controllers/serviceController.js';
 import { verifyToken } from '../controllers/authController.js';
 
 const router = express.Router();
@@ -7,6 +7,7 @@ const router = express.Router();
 router.get('/', getServices);
 router.post('/', verifyToken, createService);
 router.put('/:id', verifyToken, updateService);
-router.delete('/:id', verifyToken, deleteService);
+// Add this line
+router.put('/:id/publish', verifyToken, toggleServiceStatus);
 
 export default router;

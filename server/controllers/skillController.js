@@ -12,7 +12,12 @@ export const getSkills = async (req, res) => {
 
 export const getAllSkills = async (req, res) => {
     try {
-        const skills = await Skill.find().sort({ order: 1 });
+        const { search } = req.query;
+        let query = {};
+        if (search) {
+            query.name = { $regex: search, $options: 'i' };
+        }
+        const skills = await Skill.find(query).sort({ order: 1 });
         res.json(skills);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -40,7 +45,7 @@ export const updateSkill = async (req, res) => {
     try {
         const { name, order, isActive } = req.body;
         const skill = await Skill.findById(req.params.id);
-        
+
         if (!skill) return res.status(404).json({ message: 'Skill not found' });
 
         if (req.file) {
@@ -69,5 +74,18 @@ export const deleteSkill = async (req, res) => {
         res.json({ message: 'Skill deleted' });
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+};
+
+export const toggleSkillStatus = async (req, res) => {
+    try {
+        const skill = await Skill.findById(req.params.id);
+        if (!skill) return res.status(404).json({ message: 'Skill not found' });
+
+        skill.isPublished = !skill.isPublished;
+        await skill.save();
+        res.json(skill);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
 };
