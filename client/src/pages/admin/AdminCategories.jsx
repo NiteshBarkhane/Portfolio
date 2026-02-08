@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../config/api';
 import Icon from '../../components/Icon';
 import toast from 'react-hot-toast';
 
@@ -7,15 +7,13 @@ const AdminCategories = () => {
     const [items, setItems] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({});
-    const token = localStorage.getItem('adminToken');
+
 
     useEffect(() => { fetchItems(); }, []);
 
     const fetchItems = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/categories', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+            const res = await api.get('/categories');
             setItems(res.data);
         } catch (err) { console.error(err); toast.error("Failed to load categories"); }
     };
@@ -24,11 +22,10 @@ const AdminCategories = () => {
         e.preventDefault();
         const loadToast = toast.loading('Saving...');
         try {
-            const config = { headers: { 'Authorization': `Bearer ${token}` } };
             if (formData._id) {
-                await axios.put(`http://localhost:5000/api/categories/${formData._id}`, formData, config);
+                await api.put(`/categories/${formData._id}`, formData);
             } else {
-                await axios.post('http://localhost:5000/api/categories', formData, config);
+                await api.post('/categories', formData);
             }
             toast.success('Category Saved', { id: loadToast });
             setIsEditing(false);
@@ -44,9 +41,7 @@ const AdminCategories = () => {
         if (!window.confirm('Delete this category?')) return;
         const loadToast = toast.loading('Deleting...');
         try {
-            await axios.delete(`http://localhost:5000/api/categories/${id}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+            await api.delete(`/categories/${id}`);
             toast.success('Category deleted', { id: loadToast });
             fetchItems();
         } catch (err) {

@@ -4,6 +4,8 @@ import Project from './models/Project.js';
 import Service from './models/Service.js';
 import Setting from './models/Setting.js';
 import Category from './models/Category.js';
+import Skill from './models/Skill.js';
+import FAQ from './models/FAQ.js';
 
 dotenv.config();
 
@@ -91,7 +93,75 @@ const settings = [
     { key: "footer_phone", value: "+919171535280", category: "Footer" },
     { key: "footer_whatsapp_link", value: "https://wa.me/919171535280", category: "Footer" },
     { key: "footer_linkedin", value: "https://www.linkedin.com/in/nitesh-barkhane-66060b342/", category: "Footer" },
-    { key: "footer_github", value: "https://github.com/NiteshBarkhane", category: "Footer" }
+    { key: "footer_github", value: "https://github.com/NiteshBarkhane", category: "Footer" },
+
+    // Pricing Section
+    { key: "pricing_title", value: "Transparent Pricing", category: "Pricing Section" },
+    { key: "pricing_subtitle", value: "Flexible pricing based on project scope and requirements", category: "Pricing Section" },
+    { key: "pricing_note", value: "Pricing is flexible based on project scope, timeline, and requirements. Let's discuss your specific needs.", category: "Pricing Section" },
+    { key: "pricing_basic_title", value: "Landing Page", category: "Pricing Section" },
+    { key: "pricing_basic_price", value: "₹10,000 - ₹20,000", category: "Pricing Section" },
+    { key: "pricing_basic_features", value: "Responsive Design|Contact Form|3-5 Sections|1 Week Delivery", category: "Pricing Section" },
+    { key: "pricing_standard_title", value: "Business Website", category: "Pricing Section" },
+    { key: "pricing_standard_price", value: "₹30,000 - ₹60,000", category: "Pricing Section" },
+    { key: "pricing_standard_features", value: "Multi-page Website|Admin Panel|SEO Optimization|2-3 Weeks Delivery", category: "Pricing Section" },
+    { key: "pricing_premium_title", value: "Web Application", category: "Pricing Section" },
+    { key: "pricing_premium_price", value: "₹60,000+", category: "Pricing Section" },
+    { key: "pricing_premium_features", value: "Full-stack Development|Database Design|API Integration|Custom Timeline", category: "Pricing Section" },
+
+    // Social Media
+    { key: "social_twitter", value: "", category: "Social Media" },
+    { key: "social_instagram", value: "", category: "Social Media" },
+    { key: "social_facebook", value: "", category: "Social Media" },
+    { key: "social_youtube", value: "", category: "Social Media" },
+    { key: "social_devto", value: "", category: "Social Media" },
+    { key: "social_medium", value: "", category: "Social Media" },
+    { key: "social_stackoverflow", value: "", category: "Social Media" }
+];
+
+const skills = [
+    { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', order: 1 },
+    { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', order: 2 },
+    { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg', order: 3 },
+    { name: 'Express', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg', order: 4 },
+    { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', order: 5 },
+    { name: 'Tailwind CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg', order: 6 },
+    { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', order: 7 },
+    { name: 'HTML5', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', order: 8 },
+    { name: 'CSS3', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', order: 9 }
+];
+
+const faqs = [
+    { 
+        question: 'How long does a typical project take?', 
+        answer: 'Project timelines vary based on complexity. A landing page takes 1-2 weeks, while a full web application can take 4-8 weeks. I provide detailed timelines during our initial consultation.', 
+        order: 1, 
+        isPublished: true 
+    },
+    { 
+        question: 'What is your development process?', 
+        answer: 'I follow a structured approach: Requirements Gathering → Design & Planning → Development → Testing → Deployment → Support. You\'ll be updated at every stage with regular progress reports.', 
+        order: 2, 
+        isPublished: true 
+    },
+    { 
+        question: 'Do you provide post-launch support?', 
+        answer: 'Yes! I offer 30 days of free bug fixes after launch. I also provide ongoing maintenance packages for updates, security patches, and feature additions.', 
+        order: 3, 
+        isPublished: true 
+    },
+    { 
+        question: 'What technologies do you use?', 
+        answer: 'I specialize in the MERN stack (MongoDB, Express, React, Node.js) with modern tools like Tailwind CSS, Framer Motion, and Cloudinary. I choose technologies based on your project requirements.', 
+        order: 4, 
+        isPublished: true 
+    },
+    { 
+        question: 'Can you work with my existing website?', 
+        answer: 'Absolutely! I can enhance, redesign, or migrate your existing website to modern technologies. I also offer maintenance and feature additions for existing projects.', 
+        order: 5, 
+        isPublished: true 
+    }
 ];
 
 const seedDB = async () => {
@@ -137,6 +207,20 @@ const seedDB = async () => {
         if (pCount === 0) {
             await Project.insertMany(projects);
             console.log('Projects Seeded');
+        }
+
+        // Seed Skills if empty
+        const skillCount = await Skill.countDocuments();
+        if (skillCount === 0) {
+            await Skill.insertMany(skills);
+            console.log('Skills Seeded');
+        }
+
+        // Seed FAQs if empty
+        const faqCount = await FAQ.countDocuments();
+        if (faqCount === 0) {
+            await FAQ.insertMany(faqs);
+            console.log('FAQs Seeded');
         }
 
         console.log('✅ Database Population Complete');

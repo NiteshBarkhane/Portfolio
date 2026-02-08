@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import axios from 'axios';
+import api from '../config/api';
 import { useSettings } from '../context/SettingsContext';
 import Icon from './Icon';
 
@@ -13,10 +13,10 @@ const Portfolio = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const pRes = await axios.get('http://localhost:5000/api/projects');
+                const pRes = await api.get('/projects');
                 setProjects(pRes.data);
 
-                const cRes = await axios.get('http://localhost:5000/api/categories');
+                const cRes = await api.get('/categories');
                 const catNames = ["All", ...cRes.data.map(cat => cat.name)];
                 setCategories(catNames);
             } catch (err) {

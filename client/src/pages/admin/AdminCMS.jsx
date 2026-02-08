@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../config/api';
 import Icon from '../../components/Icon';
 import { useSettings } from '../../context/SettingsContext';
 import toast from 'react-hot-toast';
@@ -9,9 +9,12 @@ const cmsCategories = {
     'About Section': ['about_title', 'about_desc_1', 'about_desc_2', 'stat_1_label', 'stat_1_value', 'stat_2_label', 'stat_2_value', 'stat_3_label', 'stat_3_value', 'stat_4_label', 'stat_4_value'],
     'Services Section': ['services_title', 'services_subtitle'],
     'Portfolio Section': ['portfolio_title', 'portfolio_subtitle'],
+    'Pricing Section': ['pricing_title', 'pricing_subtitle', 'pricing_note', 'pricing_basic_title', 'pricing_basic_price', 'pricing_basic_features', 'pricing_standard_title', 'pricing_standard_price', 'pricing_standard_features', 'pricing_premium_title', 'pricing_premium_price', 'pricing_premium_features'],
     'Approach Section': ['approach_title', 'approach_desc'],
     'Contact Section': ['contact_title_prefix', 'contact_title_suffix', 'contact_desc', 'contact_info_title', 'contact_info_subtitle', 'contact_email', 'contact_location'],
-    'Footer': ['footer_phone', 'footer_whatsapp_link', 'footer_linkedin', 'footer_github']
+    'Header': ['header_logo_text', 'header_button_text', 'header_resume_link'],
+    'Footer': ['footer_phone', 'footer_copyright_text', 'footer_tagline'],
+    'Social Media': ['footer_whatsapp_link', 'footer_linkedin', 'footer_github', 'social_twitter', 'social_instagram', 'social_facebook', 'social_youtube'],
 };
 
 const AdminCMS = () => {
@@ -20,7 +23,7 @@ const AdminCMS = () => {
     const [formData, setFormData] = useState({});
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
-    const token = localStorage.getItem('adminToken');
+
 
     useEffect(() => {
         setFormData({});
@@ -46,12 +49,7 @@ const AdminCMS = () => {
                 data.append('value', value);
             }
 
-            const res = await axios.post('http://localhost:5000/api/settings', data, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+            const res = await api.post('/settings', data);
 
             setSettings(prev => ({ ...prev, [key]: res.data.value }));
             toast.success('Updated successfully', { id: loadingToast });

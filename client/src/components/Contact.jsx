@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../config/api';
 import { useForm, Controller } from 'react-hook-form';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
@@ -26,7 +26,7 @@ const Contact = () => {
         setLoading(true);
         setStatus(null);
         try {
-            await axios.post('http://localhost:5000/api/contact', data);
+            await api.post('/contact', data);
             setStatus('success');
             reset();
         } catch (error) {

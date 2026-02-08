@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../config/api';
 
 const SettingsContext = createContext();
 
@@ -9,7 +9,7 @@ export const SettingsProvider = ({ children }) => {
     useEffect(() => {
         const fetchSettings = async () => {
             try {
-                const res = await axios.get('http://localhost:5000/api/settings');
+                const res = await api.get('/settings');
                 const settingsMap = res.data.reduce((acc, curr) => {
                     acc[curr.key] = curr.value;
                     return acc;

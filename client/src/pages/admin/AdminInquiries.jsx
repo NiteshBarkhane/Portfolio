@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import api from '../../config/api';
 import Icon from '../../components/Icon';
 import toast from 'react-hot-toast';
 
@@ -9,7 +9,7 @@ const AdminInquiries = () => {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
     const msgEndRef = useRef(null);
-    const token = localStorage.getItem('adminToken');
+
 
     useEffect(() => {
         fetchUsers();
@@ -27,9 +27,7 @@ const AdminInquiries = () => {
 
     const fetchUsers = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/contact/users', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+            const res = await api.get('/contact/users');
             setUsers(res.data);
         } catch (err) { console.error(err); toast.error("Failed to load inquiries"); }
         setLoading(false);
@@ -37,14 +35,10 @@ const AdminInquiries = () => {
 
     const fetchMessages = async (email) => {
         try {
-            const res = await axios.get(`http://localhost:5000/api/contact/messages/${email}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+            const res = await api.get(`/contact/messages/${email}`);
             setMessages(res.data);
             setUsers(prev => prev.map(u => u.email === email ? { ...u, unreadCount: 0 } : u));
-            await axios.post('http://localhost:5000/api/contact/read', { email }, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+            await api.post('/contact/read', { email });
         } catch (err) { console.error(err); }
     };
 
@@ -52,9 +46,7 @@ const AdminInquiries = () => {
         if (!window.confirm(`Delete all messages from ${email}? This cannot be undone.`)) return;
         const loadToast = toast.loading('Deleting conversation...');
         try {
-            await axios.delete(`http://localhost:5000/api/contact/${email}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+            await api.delete(`/contact/${email}`);
             toast.success('Conversation Deleted', { id: loadToast });
             setSelectedUser(null);
             fetchUsers();

@@ -13,7 +13,11 @@ import Hero from './components/Hero';
 // Lazy Load Section Components (Code Splitting)
 const About = lazy(() => import('./components/About'));
 const Services = lazy(() => import('./components/Services'));
+const Skills = lazy(() => import('./components/Skills'));
 const Portfolio = lazy(() => import('./components/Portfolio'));
+const Testimonials = lazy(() => import('./components/Testimonials'));
+const Pricing = lazy(() => import('./components/Pricing'));
+const FAQ = lazy(() => import('./components/FAQ'));
 const Approach = lazy(() => import('./components/Approach'));
 const Contact = lazy(() => import('./components/Contact'));
 const Footer = lazy(() => import('./components/Footer'));
@@ -25,6 +29,9 @@ const AdminCMS = lazy(() => import('./pages/admin/AdminCMS'));
 const AdminProjects = lazy(() => import('./pages/admin/AdminProjects'));
 const AdminServices = lazy(() => import('./pages/admin/AdminServices'));
 const AdminCategories = lazy(() => import('./pages/admin/AdminCategories'));
+const AdminSkills = lazy(() => import('./pages/admin/AdminSkills'));
+const AdminTestimonials = lazy(() => import('./pages/admin/AdminTestimonials'));
+const AdminFAQs = lazy(() => import('./pages/admin/AdminFAQs'));
 const AdminInquiries = lazy(() => import('./pages/admin/AdminInquiries'));
 
 // Loading Fallback
@@ -52,7 +59,11 @@ function App() {
                                             <About />
                                         </Suspense>
                                         <Services />
+                                        <Skills />
                                         <Portfolio />
+                                        <Testimonials />
+                                        <Pricing />
+                                        <FAQ />
                                         <Approach />
                                         <Contact />
                                     </main>
@@ -70,6 +81,9 @@ function App() {
                                 <Route path="projects" element={<AdminProjects />} />
                                 <Route path="services" element={<AdminServices />} />
                                 <Route path="categories" element={<AdminCategories />} />
+                                <Route path="skills" element={<AdminSkills />} />
+                                <Route path="testimonials" element={<AdminTestimonials />} />
+                                <Route path="faqs" element={<AdminFAQs />} />
                                 <Route path="inquiries" element={<AdminInquiries />} />
                             </Route>
                         </Routes>

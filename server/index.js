@@ -12,6 +12,9 @@ import serviceRoutes from './routes/serviceRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import settingsRoutes from './routes/settingsRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
+import skillRoutes from './routes/skillRoutes.js';
+import faqRoutes from './routes/faqRoutes.js';
+import testimonialRoutes from './routes/testimonialRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -33,6 +36,9 @@ app.use('/api/services', serviceRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/skills', skillRoutes);
+app.use('/api/faqs', faqRoutes);
+app.use('/api/testimonials', testimonialRoutes);
 
 app.get('/', (req, res) => {
     res.send('Portfolio API is running...');

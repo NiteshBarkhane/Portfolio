@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../config/api';
 import { useSettings } from '../context/SettingsContext';
 import Icon from './Icon';
 
@@ -10,7 +10,7 @@ const Services = () => {
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const sres = await axios.get('http://localhost:5000/api/services');
+                const sres = await api.get('/services');
                 setServices(sres.data);
             } catch (err) {
                 console.error(err);

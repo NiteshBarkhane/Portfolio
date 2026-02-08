@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../config/api';
 import Icon from '../../components/Icon';
 import toast from 'react-hot-toast';
 
@@ -10,7 +10,7 @@ const AdminProjects = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({});
     const [file, setFile] = useState(null);
-    const token = localStorage.getItem('adminToken');
+
 
     useEffect(() => {
         fetchProjects();
@@ -19,7 +19,7 @@ const AdminProjects = () => {
 
     const fetchProjects = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/projects');
+            const res = await api.get('/projects');
             setItems(res.data);
         } catch (err) { console.error(err); toast.error("Failed to load projects"); }
         setLoading(false);
@@ -27,7 +27,7 @@ const AdminProjects = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/categories');
+            const res = await api.get('/categories');
             setCategories(res.data);
         } catch (err) { console.error(err); }
     };
@@ -41,12 +41,10 @@ const AdminProjects = () => {
             Object.keys(formData).forEach(key => data.append(key, formData[key]));
             if (file) data.append('image', file);
 
-            const config = { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } };
-
             if (formData._id) {
-                await axios.put(`http://localhost:5000/api/projects/${formData._id}`, data, config);
+                await api.put(`/projects/${formData._id}`, data);
             } else {
-                await axios.post('http://localhost:5000/api/projects', data, config);
+                await api.post('/projects', data);
             }
 
             toast.success(formData._id ? 'Project updated!' : 'Project created!', { id: loadToast });
@@ -64,9 +62,7 @@ const AdminProjects = () => {
         if (!window.confirm('Delete this project?')) return;
         const loadToast = toast.loading('Deleting...');
         try {
-            await axios.delete(`http://localhost:5000/api/projects/${id}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+            await api.delete(`/projects/${id}`);
             toast.success('Project deleted', { id: loadToast });
             fetchProjects();
         } catch (err) {

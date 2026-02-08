@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../config/api';
 import Icon from '../../components/Icon';
 import toast from 'react-hot-toast';
 
@@ -8,13 +8,13 @@ const AdminServices = () => {
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({});
-    const token = localStorage.getItem('adminToken');
+
 
     useEffect(() => { fetchServices(); }, []);
 
     const fetchServices = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/services');
+            const res = await api.get('/services');
             setItems(res.data);
         } catch (err) { console.error(err); toast.error("Failed to load services"); }
         setLoading(false);
@@ -24,11 +24,10 @@ const AdminServices = () => {
         e.preventDefault();
         const loadToast = toast.loading(formData._id ? 'Updating...' : 'Creating...');
         try {
-            const config = { headers: { 'Authorization': `Bearer ${token}` } };
             if (formData._id) {
-                await axios.put(`http://localhost:5000/api/services/${formData._id}`, formData, config);
+                await api.put(`/services/${formData._id}`, formData);
             } else {
-                await axios.post('http://localhost:5000/api/services', formData, config);
+                await api.post('/services', formData);
             }
             toast.success('Success!', { id: loadToast });
             setIsEditing(false);
@@ -44,9 +43,7 @@ const AdminServices = () => {
         if (!window.confirm('Delete this service?')) return;
         const loadToast = toast.loading('Deleting...');
         try {
-            await axios.delete(`http://localhost:5000/api/services/${id}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+            await api.delete(`/services/${id}`);
             toast.success('Service deleted', { id: loadToast });
             fetchServices();
         } catch (err) {
@@ -74,12 +71,12 @@ const AdminServices = () => {
                     </div>
                     <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
                         <input className="bg-secondary p-4 rounded-xl text-white border border-white/10 focus:border-accent outline-none" placeholder="Title" value={formData.title || ''} onChange={e => setFormData({ ...formData, title: e.target.value })} required />
-                        
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <input className="bg-secondary p-4 rounded-xl text-white border border-white/10 focus:border-accent outline-none" placeholder="Icon Name (e.g. Code)" value={formData.iconName || ''} onChange={e => setFormData({ ...formData, iconName: e.target.value })} />
                             <input className="bg-secondary p-4 rounded-xl text-white border border-white/10 focus:border-accent outline-none" placeholder="SVG Path (e.g. M12 2L2 7...)" value={formData.iconPath || ''} onChange={e => setFormData({ ...formData, iconPath: e.target.value })} />
                         </div>
-                        
+
                         {formData.iconPath && (
                             <div className="bg-secondary/50 p-4 rounded-xl border border-white/10 flex items-center gap-4">
                                 <span className="text-textSecondary text-sm">Preview:</span>
@@ -87,7 +84,7 @@ const AdminServices = () => {
                                 <span className="text-white text-sm">{formData.iconName || 'Icon'}</span>
                             </div>
                         )}
-                        
+
                         <textarea className="bg-secondary p-4 rounded-xl text-white border border-white/10 focus:border-accent outline-none resize-none h-32" placeholder="Description" value={formData.description || ''} onChange={e => setFormData({ ...formData, description: e.target.value })} required />
 
                         <button className="bg-accent text-white py-4 rounded-xl font-bold hover:bg-accent/90 transition-all shadow-lg shadow-accent/20">
