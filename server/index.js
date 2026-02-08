@@ -1,27 +1,56 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const dotenv = require('dotenv');
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
+// Security packages removed as requested
+// Simple logger instead of morgan
+
+// Route Imports
+import authRoutes from './routes/authRoutes.js';
+import projectRoutes from './routes/projectRoutes.js';
+import serviceRoutes from './routes/serviceRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js';
+import settingsRoutes from './routes/settingsRoutes.js';
+import contactRoutes from './routes/contactRoutes.js';
+import skillRoutes from './routes/skillRoutes.js';
+import faqRoutes from './routes/faqRoutes.js';
+import testimonialRoutes from './routes/testimonialRoutes.js';
 
 dotenv.config();
-
 const app = express();
+
+// Simple Request Logger
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+});
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api', require('./routes/contentRoutes'));
+app.use('/api/auth', authRoutes);
+app.use('/api/projects', projectRoutes);
+app.use('/api/services', serviceRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/settings', settingsRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/skills', skillRoutes);
+app.use('/api/faqs', faqRoutes);
+app.use('/api/testimonials', testimonialRoutes);
 
 app.get('/', (req, res) => {
     res.send('Portfolio API is running...');
 });
 
-// Connect to MongoDB
+// Database & Server
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.error('MongoDB connection error:', err));
+    .then(() => console.log('✅ MongoDB Connected'))
+    .catch(err => {
+        console.error('❌ DB Error:', err);
+        process.exit(1);
+    });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

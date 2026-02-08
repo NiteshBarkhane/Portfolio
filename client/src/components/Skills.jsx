@@ -1,71 +1,65 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const CircularProgress = ({ name, percentage }) => {
-    const radius = 70;
-    const circumference = 2 * Math.PI * radius;
-    const strokeDashoffset = circumference - (percentage / 100) * circumference;
-
-    return (
-        <div className="flex flex-col items-center">
-            <div className="relative w-44 h-44 flex items-center justify-center">
-                <svg className="w-full h-full transform -rotate-90">
-                    <circle
-                        cx="88"
-                        cy="88"
-                        r={radius}
-                        stroke="currentColor"
-                        strokeWidth="12"
-                        fill="transparent"
-                        className="text-secondary"
-                    />
-                    <circle
-                        cx="88"
-                        cy="88"
-                        r={radius}
-                        stroke="currentColor"
-                        strokeWidth="12"
-                        fill="transparent"
-                        strokeDasharray={circumference}
-                        style={{ strokeDashoffset }}
-                        strokeLinecap="round"
-                        className="text-accent transition-all duration-1000 ease-out"
-                    />
-                </svg>
-                <span className="absolute text-2xl font-bold text-textMain">{percentage}%</span>
-            </div>
-            <span className="mt-4 text-xl font-bold text-textMain">{name}</span>
-        </div>
-    );
-};
+import React, { useEffect, useState } from 'react';
+import api from '../config/api';
+import { motion } from 'framer-motion';
 
 const Skills = () => {
     const [skills, setSkills] = useState([]);
 
     useEffect(() => {
-        const fetchSkills = async () => {
-            try {
-                const res = await axios.get('http://localhost:5000/api/skills');
-                setSkills(res.data);
-            } catch (err) {
-                console.error(err);
-            }
-        };
-        fetchSkills();
+        api.get('/skills')
+            .then(res => setSkills(res.data))
+            .catch(err => console.error(err));
     }, []);
 
+    // Duplicate skills multiple times to ensure seamless infinite scroll
+    const duplicatedSkills = [...skills, ...skills, ...skills];
+
     return (
-        <section id="skills" className="py-24 px-8 md:px-24 bg-primary">
-            <div className="text-center mb-16">
-                <h2 className="text-5xl font-bold text-textMain mb-4">My Skills</h2>
-                <p className="text-textSecondary max-w-2xl mx-auto">
-                    Exploring my technical expertise in design and creative tools.
+        <section id="skills" className="py-10 bg-secondary/30 relative overflow-hidden">
+            {/* Gradient Masks for seamless effect */}
+            <div className="absolute top-0 left-0 h-full w-24 bg-gradient-to-r from-secondary/30 to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute top-0 right-0 h-full w-24 bg-gradient-to-l from-secondary/30 to-transparent z-10 pointer-events-none"></div>
+
+            <div className="container mx-auto px-6 mb-8 text-center">
+                <p className="text-textSecondary text-sm uppercase tracking-widest font-medium">
+                    Powering My Projects
                 </p>
+                {/* <div className="w-1 h-8 bg-accent mx-auto mt-2 mb-4 rounded-full"></div> */}
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 justify-items-center">
-                {skills.map((skill, index) => (
-                    <CircularProgress key={index} name={skill.name} percentage={skill.percentage} />
-                ))}
+
+            <div className="relative flex overflow-hidden group">
+                <motion.div
+                    className="flex gap-8 md:gap-16 items-center"
+                    animate={{
+                        x: ["0%", "-33.33%"], // Move by one-third since we tripled the list
+                    }}
+                    transition={{
+                        duration: 20, // Adjust speed: lower is faster
+                        repeat: Infinity,
+                        ease: "linear",
+                        repeatType: "loop" // Standard loop for seamless marquee
+                    }}
+                >
+                    {duplicatedSkills.map((skill, index) => (
+                        <div
+                            key={`${skill._id}-${index}`}
+                            className="flex items-center gap-4 group/item grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 cursor-default"
+                        >
+                            <div className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center bg-white/5 rounded-xl p-2 border border-white/5 group-hover/item:border-accent/40 group-hover/item:bg-accent/10 transition-all shadow-lg">
+                                {skill.icon ? (
+                                    <img
+                                        src={skill.icon}
+                                        alt={skill.name}
+                                        className="w-full h-full object-contain drop-shadow-md"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-accent/20 rounded-full"></div>
+                                )}
+                            </div>
+                            <span className="text-base md:text-xl font-bold text-white tracking-wide">{skill.name}</span>
+                        </div>
+                    ))}
+                </motion.div>
             </div>
         </section>
     );

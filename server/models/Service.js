@@ -1,9 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const ServiceSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
-    icon: { type: String },
+    iconName: { type: String },
+    iconPath: { type: String },
+    isPublished: { type: Boolean, default: true },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Service', ServiceSchema);
+export default mongoose.model('Service', ServiceSchema);

@@ -1,9 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const SkillSchema = new mongoose.Schema({
+const skillSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    percentage: { type: Number, required: true },
-    icon: { type: String },
+    icon: { type: String, required: true },
+    order: { type: Number, default: 0 },
+    isActive: { type: Boolean, default: true },
+    isPublished: { type: Boolean, default: true }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Skill', SkillSchema);
+export default mongoose.model('Skill', skillSchema);
